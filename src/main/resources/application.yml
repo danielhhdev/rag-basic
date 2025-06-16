@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: rag-basic
+
+  ai:
+    ollama:
+      base-url: http://localhost:11434      # endpoint local de Ollama
+      init:
+        pull-model-strategy: always         # auto-descarga del modelo si falta
+      embedding:
+        model: mxbai-embed-large
+
+
+qdrant:
+  base-url: http://localhost:6333  # Cambia si tienes Qdrant en otro host/puerto
+  collection: rag-documents        # Nombre de la colección principal
+  api-key: ""                      # Solo si usas Qdrant Cloud (en local suele ir vacío)
+
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    com.dhh.ragbasic: DEBUG
