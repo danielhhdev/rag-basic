@@ -1,4 +1,4 @@
 package com.dhh.ragBasic.service;
 
-public class VectorService {
+public interface VectorService {
 }

@@ -1,4 +1,8 @@
 package com.dhh.ragBasic.service;
 
-public class ExtractionService {
+import org.springframework.web.multipart.MultipartFile;
+
+public interface ExtractionService {
+
+    String extractText(MultipartFile file);
 }
