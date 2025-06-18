@@ -1,6 +1,6 @@
 package com.dhh.ragBasic.service;
 
-import com.dhh.ragBasic.model.EmbeddingResult;
+import com.dhh.ragBasic.model.embedding.EmbeddingResult;
 
 public interface EmbeddingService {
 

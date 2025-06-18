@@ -1,4 +1,4 @@
-package com.dhh.ragBasic.model;
+package com.dhh.ragBasic.model.embedding;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

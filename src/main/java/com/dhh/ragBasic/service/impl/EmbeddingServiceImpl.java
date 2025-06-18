@@ -1,6 +1,6 @@
 package com.dhh.ragBasic.service.impl;
 
-import com.dhh.ragBasic.model.EmbeddingResult;
+import com.dhh.ragBasic.model.embedding.EmbeddingResult;
 import com.dhh.ragBasic.service.EmbeddingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.embedding.EmbeddingModel;
