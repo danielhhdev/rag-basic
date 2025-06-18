@@ -4,5 +4,7 @@ import com.dhh.ragBasic.model.embedding.EmbeddingResult;
 
 public interface EmbeddingService {
 
-    EmbeddingResult embedText(String chunkId, String text, String docId);
+    EmbeddingResult embedChuck(String chunkId, String text, String docId);
+
+    float[] embedText(String text);
 }

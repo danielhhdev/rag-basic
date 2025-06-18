@@ -7,6 +7,9 @@ import com.dhh.ragBasic.model.embedding.EmbeddingResult;
 import com.dhh.ragBasic.model.qdrant.QdrantPoint;
 import com.dhh.ragBasic.model.qdrant.QdrantUpsertRequest;
 import com.dhh.ragBasic.service.VectorService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -29,6 +32,7 @@ import java.util.Map;
  * Proyecto orientado al aprendizaje de arquitecturas IA modernas con Java y Spring Boot.
  */
 @Service
+@Slf4j
 public class VectorServiceImpl implements VectorService {
 
     /**
@@ -60,7 +64,7 @@ public class VectorServiceImpl implements VectorService {
      * @return Mono<Void> reactivo indicando éxito o error de la operación.
      */
     @Override
-    public Mono<Void> upsertEmbeddings(List<EmbeddingResult> embeddings) {
+    public Mono<Void> upsertEmbeddings(List<EmbeddingResult> embeddings) throws JsonProcessingException {
         // Mapea cada EmbeddingResult a la estructura esperada por Qdrant (QdrantPoint)
         List<QdrantPoint> points = embeddings.stream()
                 .map(embedding -> new QdrantPoint(
@@ -76,8 +80,16 @@ public class VectorServiceImpl implements VectorService {
 
         String endpoint = "/collections/" + qdrantConfig.getCollection() + "/points?wait=true";
 
+        for (float f : points.getFirst().getVector()) {
+            if (Float.isNaN(f) || Float.isInfinite(f)) {
+                throw new RuntimeException("Valor no válido en vector: " + f);
+            }
+        }
+
+        log.info("Enviando a Qdrant: {}", new ObjectMapper().writeValueAsString(request));
+        log.info("afa {}",request.getPoints().getFirst().getVector().length);
         // Realiza el POST a Qdrant (REST) para almacenar los embeddings
-        return qdrantWebClient.post()
+        return qdrantWebClient.put()
                 .uri(endpoint)
                 .bodyValue(request)
                 .retrieve()

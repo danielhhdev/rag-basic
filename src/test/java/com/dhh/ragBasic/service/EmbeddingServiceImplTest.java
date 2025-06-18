@@ -26,7 +26,7 @@ public class EmbeddingServiceImplTest {
 
     @Test
     @DisplayName("Genera un EmbeddingResult correcto a partir de un chunk de texto")
-    void testEmbedTextReturnsCorrectResult() {
+    void testEmbedChuckReturnsCorrectResult() {
         // Arrange
         String chunkId = "chunk-1";
         String text = "Texto de prueba para embedding.";
@@ -36,7 +36,7 @@ public class EmbeddingServiceImplTest {
         when(embeddingModel.embed(text)).thenReturn(fakeVector);
 
         // Act
-        EmbeddingResult result = embeddingService.embedText(chunkId, text, docId);
+        EmbeddingResult result = embeddingService.embedChuck(chunkId, text, docId);
 
         // Assert
         assertNotNull(result);
@@ -48,7 +48,7 @@ public class EmbeddingServiceImplTest {
 
     @Test
     @DisplayName("Devuelve el vector adecuado incluso si el texto está vacío")
-    void testEmbedTextWithEmptyText() {
+    void testEmbedTextWithEmptyChuck() {
         String chunkId = "c2";
         String text = "";
         String docId = "d2";
@@ -56,7 +56,7 @@ public class EmbeddingServiceImplTest {
 
         when(embeddingModel.embed(text)).thenReturn(emptyVector);
 
-        EmbeddingResult result = embeddingService.embedText(chunkId, text, docId);
+        EmbeddingResult result = embeddingService.embedChuck(chunkId, text, docId);
 
         assertNotNull(result);
         assertEquals(0, result.getVector().length);

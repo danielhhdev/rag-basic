@@ -36,11 +36,15 @@ public class EmbeddingServiceImpl implements EmbeddingService {
      * @return Un EmbeddingResult con el vector generado, el texto original y los metadatos.
      */
     @Override
-    public EmbeddingResult embedText(String chunkId, String text, String docId) {
+    public EmbeddingResult embedChuck(String chunkId, String text, String docId) {
         // Llama al modelo configurado para obtener el embedding (vector de floats)
         float[] vector = embeddingModel.embed(text);
 
         // Construye el resultado con el vector, el texto y los metadatos
         return new EmbeddingResult(chunkId, vector, text, docId);
+    }
+
+    public float[] embedText(String text) {
+        return embeddingModel.embed(text);
     }
 }

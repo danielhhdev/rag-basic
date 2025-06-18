@@ -5,6 +5,7 @@ import com.dhh.ragBasic.dto.qdrant.QdrantSearchResponse;
 import com.dhh.ragBasic.dto.qdrant.QdrantSearchResult;
 import com.dhh.ragBasic.model.embedding.EmbeddingResult;
 import com.dhh.ragBasic.service.impl.VectorServiceImpl;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -56,14 +57,14 @@ public class VectorServiceImplTest {
 
     @Test
     @DisplayName("Debe hacer un upsert batch correctamente en Qdrant")
-    void testUpsertEmbeddings() {
+    void testUpsertEmbeddings() throws JsonProcessingException {
         // Arrange
         EmbeddingResult embedding = new EmbeddingResult("chunkId", new float[]{1.0f, 2.0f, 3.0f}, "texto de chunk", "docId1");
         List<EmbeddingResult> embeddings = List.of(embedding);
 
         when(qdrantConfig.getCollection()).thenReturn("test-collection");
         // Mock chain de WebClient para POST
-        when(qdrantWebClient.post()).thenReturn(requestBodyUriSpec);
+        when(qdrantWebClient.put()).thenReturn(requestBodyUriSpec);
         when(requestBodyUriSpec.uri(anyString())).thenReturn(requestBodyUriSpec);
         when(requestBodyUriSpec.bodyValue(any())).thenReturn(requestHeadersSpec);
         when(requestHeadersSpec.retrieve()).thenReturn(responseSpec);
@@ -74,7 +75,7 @@ public class VectorServiceImplTest {
 
         // Assert
         assertNotNull(result);
-        verify(qdrantWebClient).post();
+        verify(qdrantWebClient).put();
         verify(requestBodyUriSpec).uri(uriCaptor.capture());
         String expectedUri = "/collections/test-collection/points?wait=true";
         assertEquals(expectedUri, uriCaptor.getValue());
