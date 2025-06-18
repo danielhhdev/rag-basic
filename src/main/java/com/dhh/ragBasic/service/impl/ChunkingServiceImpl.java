@@ -2,6 +2,7 @@ package com.dhh.ragBasic.service.impl;
 
 import com.dhh.ragBasic.model.DocumentChunk;
 import com.dhh.ragBasic.service.ChunkingService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,18 +13,16 @@ import java.util.UUID;
 /**
  * Servicio de chunking para dividir textos largos en fragmentos (chunks) óptimos,
  * respetando los límites de palabras por chunk y garantizando que nunca se partan frases.
- *
+ * <p>
  * Implementa solapamiento (overlapping) entre chunks para mantener el contexto,
  * y es robusto ante textos y parámetros inusuales.
- *
+ * <p>
  * Proyecto orientado al aprendizaje de pipelines RAG y procesamiento de lenguaje natural en Java/Spring Boot.
  */
 @Service
+@Slf4j
 public class ChunkingServiceImpl implements ChunkingService {
-
-    // Tamaño por defecto de cada chunk (en palabras)
     private static final int DEFAULT_CHUNK_SIZE = 300;
-    // Número de palabras solapadas entre chunks por defecto
     private static final int DEFAULT_OVERLAP = 50;
 
     /**
@@ -39,18 +38,18 @@ public class ChunkingServiceImpl implements ChunkingService {
     /**
      * Divide el texto en chunks de frases completas, con un máximo de palabras por chunk
      * y solapando frases entre chunks para no perder contexto.
-     *
+     * <p>
      * - Si una frase es más larga que el chunk, se fuerza su inclusión como chunk único.
      * - Si el overlap es mayor o igual al chunkSize, se ajusta automáticamente para evitar bucles infinitos.
      *
-     * @param text Texto a chunkear.
+     * @param text      Texto a chunkear.
      * @param chunkSize Número máximo de palabras por chunk.
-     * @param overlap Palabras solapadas entre chunks.
-     * @param docId Identificador único del documento (para trazabilidad en pipelines multi-documento).
+     * @param overlap   Palabras solapadas entre chunks.
+     * @param docId     Identificador único del documento (para trazabilidad en pipelines multi-documento).
      * @return Lista de objetos DocumentChunk con metadatos y texto.
      */
     public List<DocumentChunk> chunkTextBySentences(String text, int chunkSize, int overlap, String docId) {
-
+        log.info("Se crean los chunk para el doc: {}", docId);
         // Validación y corrección de parámetros para evitar bucles infinitos
         if (overlap >= chunkSize) {
             overlap = Math.max(chunkSize / 2, 1);
@@ -105,7 +104,7 @@ public class ChunkingServiceImpl implements ChunkingService {
 
     /**
      * Separa un texto en frases usando una expresión regular sencilla.
-     *
+     * <p>
      * Nota: Para idiomas complejos o soporte multilenguaje, puedes mejorar usando una librería NLP.
      *
      * @param text Texto completo a dividir.
@@ -131,8 +130,8 @@ public class ChunkingServiceImpl implements ChunkingService {
      * Une un subconjunto de frases en un solo string, separadas por espacio.
      *
      * @param sentences Lista de frases.
-     * @param start Índice de inicio (incluido).
-     * @param end Índice de fin (excluido).
+     * @param start     Índice de inicio (incluido).
+     * @param end       Índice de fin (excluido).
      * @return Texto combinado.
      */
     private String joinSentences(List<String> sentences, int start, int end) {

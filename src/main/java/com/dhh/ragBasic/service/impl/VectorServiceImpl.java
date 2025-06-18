@@ -86,8 +86,9 @@ public class VectorServiceImpl implements VectorService {
             }
         }
 
-        log.info("Enviando a Qdrant: {}", new ObjectMapper().writeValueAsString(request));
-        log.info("afa {}",request.getPoints().getFirst().getVector().length);
+        //log.info("Enviando a Qdrant: {}", new ObjectMapper().writeValueAsString(request));
+        //log.info("afa {}",request.getPoints().getFirst().getVector().length);
+
         // Realiza el POST a Qdrant (REST) para almacenar los embeddings
         return qdrantWebClient.put()
                 .uri(endpoint)

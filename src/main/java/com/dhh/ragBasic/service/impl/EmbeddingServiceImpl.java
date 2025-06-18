@@ -3,6 +3,7 @@ package com.dhh.ragBasic.service.impl;
 import com.dhh.ragBasic.model.embedding.EmbeddingResult;
 import com.dhh.ragBasic.service.EmbeddingService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class EmbeddingServiceImpl implements EmbeddingService {
 
     /**
@@ -37,6 +39,7 @@ public class EmbeddingServiceImpl implements EmbeddingService {
      */
     @Override
     public EmbeddingResult embedChuck(String chunkId, String text, String docId) {
+        log.info("Se hace el embedding del chuck: {}", chunkId);
         // Llama al modelo configurado para obtener el embedding (vector de floats)
         float[] vector = embeddingModel.embed(text);
 
@@ -45,6 +48,7 @@ public class EmbeddingServiceImpl implements EmbeddingService {
     }
 
     public float[] embedText(String text) {
+        log.info("Se hace el embedding del texto: {}", text);
         return embeddingModel.embed(text);
     }
 }

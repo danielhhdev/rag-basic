@@ -7,8 +7,12 @@ spring:
       base-url: http://localhost:11434      # endpoint local de Ollama
       init:
         pull-model-strategy: always         # auto-descarga del modelo si falta
+        timeout: 120s
       embedding:
         model: mxbai-embed-large
+      chat:
+        model: mistral
+
 
 
 qdrant:

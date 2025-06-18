@@ -12,4 +12,6 @@ public interface RagService {
     Mono<Void> processAndStoreDocument(MultipartFile file, int chunkSize, int overlap, String docId) throws JsonProcessingException;
     Mono<List<QdrantSearchResult>> queryRag(String question, int topK);
 
+    String answerWithRag(String question);
+
 }
