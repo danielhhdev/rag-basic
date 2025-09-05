@@ -4,7 +4,11 @@ import com.dhh.ragBasic.dto.qdrant.QdrantSearchResult;
 import com.dhh.ragBasic.model.DocumentChunk;
 import com.dhh.ragBasic.model.embedding.EmbeddingResult;
 import com.dhh.ragBasic.service.ChatService;
+import com.dhh.ragBasic.service.ChunkingService;
+import com.dhh.ragBasic.service.EmbeddingService;
+import com.dhh.ragBasic.service.ExtractionService;
 import com.dhh.ragBasic.service.RagService;
+import com.dhh.ragBasic.service.VectorService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,10 +36,10 @@ import java.util.stream.Collectors;
 @Slf4j
 public class RagServiceImpl implements RagService {
 
-    private final ExtractionServiceImpl extractionService;
-    private final ChunkingServiceImpl chunkingService;
-    private final EmbeddingServiceImpl embeddingService;
-    private final VectorServiceImpl vectorService;
+    private final ExtractionService extractionService;
+    private final ChunkingService chunkingService;
+    private final EmbeddingService embeddingService;
+    private final VectorService vectorService;
     private final ChatService chatService;
 
     private final static int TOP_K_DEFAULT = 10;
